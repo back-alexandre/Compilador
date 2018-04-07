@@ -18,7 +18,7 @@ public class Fun
   boolean Menosshort = false; // saida resumida -= false
   public static void main(String args []) throws ParseException
   {
-
+   
     String filename = "";
     Fun divertido;
     int i;
@@ -62,25 +62,7 @@ public class Fun
       System.out.println(divertido.token_source.foundLexError() +  "Erros léxicos encontrads");
     else
       System.out.println("Programa analisado com sucesso");
-    // antigo
-    /*
-   while (true) { 
-		try { 
-            Fun parser = new Fun(System.in);
-	    	parser.program();
-	    	System.out.println("Sucesso!");
-	  	} catch (ParseException e) {
-	  		System.out.println(e);
-	  		break;
-	  	} catch (TokenMgrError e) {
-	  	  	System.out.println(e);
-	  		break;
-	  	}catch (Exception e) {
-	  	  	System.out.println(e);
-	  		break;
-	  	}
-    }
-    */
+    // 
   }
   static public String im(int x) // metodo auxiliar
   {
@@ -281,14 +263,16 @@ void program() :
 {}
 {
   (
-    <PLUS> { System.out.println("Reconheceu PLUS"); } 
-  | <MINUS> { System.out.println("Reconheceu MINUS"); } 
-  | <STAR> { System.out.println("Reconheceu STAR"); } 
-  | <SLASH> { System.out.println("Reconheceu SLASH"); }  
+    <int_constant> { System.out.println("Reconheceu int_constant"); } 
   | <float_constant> { System.out.println("Reconheceu float_constant"); } 
   | <char_constant> { System.out.println("Reconheceu char_constant"); } 
+  | <string_constant> { System.out.println("Reconheceu string_constant"); } 
+  | <null_constant> { System.out.println("Reconheceu null_constant"); } 
   | <boolean_constant> { System.out.println("Reconheceu boolean_constant"); }  
   | <IDENT> { System.out.println("Reconheceu IDENT"); }  
+  | <NOT> { System.out.println("Reconheceu NOT"); }  
+  | <AND> { System.out.println("Reconheceu AND"); }  
+  | <OR> { System.out.println("Reconheceu OR"); }  
   | <XOR> { System.out.println("Reconheceu XOR"); }  
   )*
 }
