@@ -1,0 +1,209 @@
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ * @aluno1=Alexandre Pereira Back 18100844 
+ * @aluno2=Yuri Kayser da Rosa 12201035
+ */
+options
+{
+  static = false; //Nao criara metodos estaticos
+}
+
+PARSER_BEGIN(Fun)
+package parser;
+
+public class Fun
+{
+  public static void main(String args []) throws ParseException
+  {
+    Fun parser = new Fun(System.in);
+
+	try { 
+    	parser.program();
+    	System.out.println("Sucesso!");
+  	} catch (ParseException e) {
+  		System.out.println(e);
+  	} catch (TokenMgrError e) {
+  	  	System.out.println(e);
+  	}catch (Exception e) {
+  	  	System.out.println(e);
+  	}
+  }
+}
+
+PARSER_END(Fun)
+
+SKIP :
+{
+  " "
+| "\r"
+| "\t"
+| "\n"
+| "\f"
+}
+
+SKIP:
+{
+ "/*": multilinecomment
+}
+
+<multilinecomment > SKIP:
+{
+  "*/" : DEFAULT
+|  <~[]> 
+}
+
+SKIP:
+{
+ "//": singlelinecomment
+}
+
+<singlelinecomment > SKIP:
+{
+  <["\n","\r"] > : DEFAULT
+|  <~[]> 
+}
+
+SPECIAL_TOKEN: /* tratar os erros léxicos */
+{
+<INVALID_LEXICAL:
+( ~ ["a"-"z", "A"-"Z",
+  "0"-"9",
+  "\"",
+  "(",
+  ")",
+  "[",
+  "]",
+  "{",
+  "}",
+  ";",
+  ",",
+  ".",
+  "=",
+  ">",
+  "<",
+  "!",
+  "+",
+  "-",
+  "*",
+  "/",
+  "%",
+  " ",
+  "\t",
+  "\n",
+  "\r",
+  "\f" 
+])+>
+  {
+    System.err.println("Line " + input_stream.getEndLine() + " - Invalid string found: " + image);
+    countLexError++;
+  }
+|
+<INVALIND_CONST:
+ "\"" (~ ["\n", "\r", "\""])* ["\n","\r"] >
+  {
+    System.err.println("Line " + input_stream.getEndLine() +  " - String constant has a \\n: " + image);
+    countLexError++;
+  }
+}
+
+
+TOKEN_MGR_DECLS :
+{
+int countLexError = 0;
+
+public int  foundLexError()
+{
+  return countLexError;
+}
+
+}
+
+TOKEN : /* Palavras reservadas */
+{
+  < BREAK : "break" >
+| < CLASS : "class" >
+| < CONSTRUCTOR : "constructor" >
+| < ELSE : "else" >
+| < EXTENDS : "extends" >
+| < FOR : "for" >
+| < IF : "if" >
+| < INT : "int" >
+| < FLOAT : "float" >
+| < NEW : "new" >
+| < PRINT : "print" >
+| < READ : "read" >
+| < RETURN : "return" >
+| < STRING : "string" >
+| < SUPER : "super" >
+| < BOOLEAN : "boolean" >
+}
+
+TOKEN : /* OPERATORS */
+{ < ASSIGN : "=" >
+| < GT : ">" >
+| < LT : "<" >
+| < EQ : "==" >
+| < LE : "<=" >
+| < GE : ">=" >
+| < NEQ : "!=" >
+| < PLUS : "+" >
+| < MINUS : "-" >
+| < STAR : "*" >
+| < SLASH : "/" >
+| < REM : "%" >
+}
+
+TOKEN : /* Simbolos Especiais */
+{ < LPAREN : "(" >
+| < RPAREN : ")" >
+| < LBRACE : "{" >
+| < RBRACE : "}" >
+| < LBRACKET : "[" >
+| < RBRACKET : "]" >
+| < SEMICOLON : ";" >
+| < COMMA : "," >
+| < DOT : "." >
+}
+
+TOKEN : /* constantes */
+{
+  < int_constant:( // nrs decimais inteiros, octais, hexa ou binarios
+                   (["0"-"9"] (["0"-"9"])* ) |
+                   (["0"-"7"] (["0"-"7"])* ["o", "O"] ) |
+                   (["0"-"9"] (["0"-"7","A"-"F","a"-"f"])*  ["h", "H"] ) |
+                   (["0"-"1"] (["0"-"1"])* ["b", "B"]) 
+                  ) >
+|
+< float_constant:( // 
+                   ((["0"-"9"])+ ["."] (["0"-"9"])+ ) 
+                  ) >
+|
+ <  string_constant: // constante string
+   "\""( ~["\"","\n","\r"])* "\"" >
+|
+ < null_constant: "null" > // constante null
+|
+ < boolean_constant:( "true" | "false" )> // constantes boleanas
+
+}
+
+TOKEN : /* Identificadores */
+{
+ <  IDENT: <LETTER> (<LETTER>|<DIGIT>)* >
+|
+ < #LETTER: ["A"-"Z","a"-"z"] >
+|
+ < #DIGIT: ["0"-"9"] >
+
+}
+
+void program() :
+{}
+{
+  (
+    <PLUS> { System.out.println("Reconheceu PLUS"); } 
+  | <MINUS> { System.out.println("Reconheceu MINUS"); } 
+  | <STAR> { System.out.println("Reconheceu STAR"); } 
+  | <SLASH> { System.out.println("Reconheceu SLASH"); }  
+  )*
+}
