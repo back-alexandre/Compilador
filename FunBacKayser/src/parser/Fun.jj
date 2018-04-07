@@ -11,22 +11,86 @@ options
 PARSER_BEGIN(Fun)
 package parser;
 
+import java.io.*;
+
 public class Fun
 {
+  boolean Menosshort = false; // saida resumida -= false
   public static void main(String args []) throws ParseException
   {
-    Fun parser = new Fun(System.in);
 
-	try { 
-    	parser.program();
-    	System.out.println("Sucesso!");
-  	} catch (ParseException e) {
-  		System.out.println(e);
-  	} catch (TokenMgrError e) {
-  	  	System.out.println(e);
-  	}catch (Exception e) {
-  	  	System.out.println(e);
-  	}
+    String filename = "";
+    Fun divertido;
+    int i;
+    boolean ms = false;
+
+    for (i = 0; i< args.length - 1; i++)
+    {
+      if (args[i].toLowerCase().equals("-short"))
+        ms = true;
+      else
+      {
+        System.out.println("Usage is: java Fun [-short] inputfile");
+        System.exit(0);
+
+      }
+
+    }
+
+    if (args[i].equals("-"))
+    {
+      System.out.println("Reading from stantard input...");
+      divertido = new Fun(System.in);
+    }
+    else
+    { // le do arquivo
+      filename = args[args.length-1];
+      System.out.println("Lendo do arquivo...");
+      try {
+        divertido = new Fun(new java.io.FileInputStream(filename));
+      }
+      catch (java.io.FileNotFoundException e) {
+		System.out.println("File " + filename + " not found.");
+      	return;
+      }  
+    }
+    divertido.Menosshort = ms;
+    divertido.program(); // metodo que faz analise
+
+    // verifica se houve erro léxico
+    if (divertido.token_source.foundLexError() != 0 )
+      System.out.println(divertido.token_source.foundLexError() +  "Erros léxicos encontrads");
+    else
+      System.out.println("Programa analisado com sucesso");
+    // antigo
+    /*
+   while (true) { 
+		try { 
+            Fun parser = new Fun(System.in);
+	    	parser.program();
+	    	System.out.println("Sucesso!");
+	  	} catch (ParseException e) {
+	  		System.out.println(e);
+	  		break;
+	  	} catch (TokenMgrError e) {
+	  	  	System.out.println(e);
+	  		break;
+	  	}catch (Exception e) {
+	  	  	System.out.println(e);
+	  		break;
+	  	}
+    }
+    */
+  }
+  static public String im(int x) // metodo auxiliar
+  {
+    int k;
+    String s;
+    s = tokenImage[x];
+    k = s.lastIndexOf("\"");
+    try {s = s.substring(1,k); }
+      catch(StringIndexOutOfBoundsException e) {}
+    return s;
   }
 }
 
@@ -69,6 +133,7 @@ SPECIAL_TOKEN: /* tratar os erros léxicos */
 ( ~ ["a"-"z", "A"-"Z",
   "0"-"9",
   "\"",
+  "\'",
   "(",
   ")",
   "[",
@@ -104,6 +169,13 @@ SPECIAL_TOKEN: /* tratar os erros léxicos */
     System.err.println("Line " + input_stream.getEndLine() +  " - String constant has a \\n: " + image);
     countLexError++;
   }
+|
+<INVALIND_CHAR:
+ "\'" (~ ["\r", "\""]) >
+  {
+    System.err.println("Line " + input_stream.getEndLine() +  " - Char constant has a \\r: " + image);
+    countLexError++;
+  }
 }
 
 
@@ -134,6 +206,7 @@ TOKEN : /* Palavras reservadas */
 | < READ : "read" >
 | < RETURN : "return" >
 | < STRING : "string" >
+| < CHAR : "char" >
 | < SUPER : "super" >
 | < BOOLEAN : "boolean" >
 }
@@ -151,6 +224,10 @@ TOKEN : /* OPERATORS */
 | < STAR : "*" >
 | < SLASH : "/" >
 | < REM : "%" >
+| < NOT : "not" >
+| < AND : "and" >
+| < OR : "or" >
+| < XOR : "xor" >
 }
 
 TOKEN : /* Simbolos Especiais */
@@ -178,6 +255,9 @@ TOKEN : /* constantes */
                    ((["0"-"9"])+ ["."] (["0"-"9"])+ ) 
                   ) >
 |
+ <  char_constant: // constante char
+   "\'"( ~["\'","\r"]) "\'" >
+|    
  <  string_constant: // constante string
    "\""( ~["\"","\n","\r"])* "\"" >
 |
@@ -205,5 +285,10 @@ void program() :
   | <MINUS> { System.out.println("Reconheceu MINUS"); } 
   | <STAR> { System.out.println("Reconheceu STAR"); } 
   | <SLASH> { System.out.println("Reconheceu SLASH"); }  
+  | <float_constant> { System.out.println("Reconheceu float_constant"); } 
+  | <char_constant> { System.out.println("Reconheceu char_constant"); } 
+  | <boolean_constant> { System.out.println("Reconheceu boolean_constant"); }  
+  | <IDENT> { System.out.println("Reconheceu IDENT"); }  
+  | <XOR> { System.out.println("Reconheceu XOR"); }  
   )*
 }
