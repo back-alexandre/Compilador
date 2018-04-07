@@ -270,9 +270,47 @@ void program() :
   | <null_constant> { System.out.println("Reconheceu null_constant"); } 
   | <boolean_constant> { System.out.println("Reconheceu boolean_constant"); }  
   | <IDENT> { System.out.println("Reconheceu IDENT"); }  
-  | <NOT> { System.out.println("Reconheceu NOT"); }  
-  | <AND> { System.out.println("Reconheceu AND"); }  
-  | <OR> { System.out.println("Reconheceu OR"); }  
-  | <XOR> { System.out.println("Reconheceu XOR"); }  
+  | <BREAK> { System.out.println("Reconheceu BREAK"); }
+  | <CLASS> { System.out.println("Reconheceu CLASS"); }
+  | <CONSTRUCTOR> { System.out.println("Reconheceu CONSTRUCTOR"); }
+  | <ELSE> { System.out.println("Reconheceu ELSE"); }
+  | <EXTENDS> { System.out.println("Reconheceu EXTENDS"); }
+  | <FOR> { System.out.println("Reconheceu FOR"); }
+  | <IF> { System.out.println("Reconheceu IF"); }
+  | <INT> { System.out.println("Reconheceu INT"); }
+  | <FLOAT> { System.out.println("Reconheceu FLOAT"); }
+  | <NEW> { System.out.println("Reconheceu NEW"); }
+  | <PRINT> { System.out.println("Reconheceu PRINT"); }
+  | <READ> { System.out.println("Reconheceu READ"); }
+  | <RETURN> { System.out.println("Reconheceu RETURN"); }
+  | <STRING> { System.out.println("Reconheceu STRING"); }
+  | <CHAR> { System.out.println("Reconheceu CHAR"); }
+  | <SUPER> { System.out.println("Reconheceu SUPER"); }
+  | <BOOLEAN> { System.out.println("Reconheceu BOOLEAN"); }
+  | <ASSIGN> { System.out.println("Reconheceu ASSIGN"); }
+  | <GT> { System.out.println("Reconheceu GT"); }
+  | <LT> { System.out.println("Reconheceu LT"); }
+  | <EQ> { System.out.println("Reconheceu EQ"); }
+  | <LE> { System.out.println("Reconheceu LE"); }
+  | <GE> { System.out.println("Reconheceu GE"); }
+  | <NEQ> { System.out.println("Reconheceu NEQ"); } 
+  | <PLUS> { System.out.println("Reconheceu PLUS"); }
+  | <MINUS> { System.out.println("Reconheceu MINUS"); }
+  | <STAR> { System.out.println("Reconheceu STAR"); }
+  | <SLASH> { System.out.println("Reconheceu SLASH"); }
+  | <REM> { System.out.println("Reconheceu REM"); }
+  | <NOT> { System.out.println("Reconheceu NOT"); }
+  | <AND> { System.out.println("Reconheceu AND"); }
+  | <OR> { System.out.println("Reconheceu OR"); }
+  | <XOR> { System.out.println("Reconheceu XOR"); }
+  | <LPAREN> { System.out.println("Reconheceu LPAREN"); }
+  | <RPAREN> { System.out.println("Reconheceu RPAREN"); }
+  | <LBRACE> { System.out.println("Reconheceu LBRACE"); }
+  | <RBRACE> { System.out.println("Reconheceu RBRACE"); }
+  | <LBRACKET> { System.out.println("Reconheceu LBRACKET"); }
+  | <RBRACKET> { System.out.println("Reconheceu RBRACKET"); }
+  | <SEMICOLON> { System.out.println("Reconheceu SEMICOLON"); }
+  | <COMMA     > { System.out.println("Reconheceu COMMA"); }
+  | <DOT> { System.out.println("Reconheceu DOT"); }  
   )*
 }
