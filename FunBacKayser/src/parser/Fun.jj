@@ -57,9 +57,9 @@ public class Fun
     divertido.Menosshort = ms;
     divertido.program(); // metodo que faz analise
 
-    // verifica se houve erro léxico
+    // verifica se houve erro lï¿½xico
     if (divertido.token_source.foundLexError() != 0 )
-      System.out.println(divertido.token_source.foundLexError() +  "Erros léxicos encontrads");
+      System.out.println(divertido.token_source.foundLexError() +  "Erros lï¿½xicos encontrads");
     else
       System.out.println("Programa analisado com sucesso");
     // 
@@ -109,7 +109,7 @@ SKIP:
 |  <~[]> 
 }
 
-SPECIAL_TOKEN: /* tratar os erros léxicos */
+SPECIAL_TOKEN: /* tratar os erros lï¿½xicos */
 {
 <INVALID_LEXICAL:
 ( ~ ["a"-"z", "A"-"Z",
@@ -141,22 +141,25 @@ SPECIAL_TOKEN: /* tratar os erros léxicos */
   "\f" 
 ])+>
   {
-    System.err.println("Line " + input_stream.getEndLine() + " - Invalid string found: " + image);
+    System.err.println("Linha " + input_stream.getEndLine() + " - String invalida encontrada: " + image);
     countLexError++;
+    System.err.println("Quantidade de erros encontrados ate o momento: " + countLexError);
   }
 |
 <INVALIND_CONST:
  "\"" (~ ["\n", "\r", "\""])* ["\n","\r"] >
   {
-    System.err.println("Line " + input_stream.getEndLine() +  " - String constant has a \\n: " + image);
+    System.err.println("Linha " + input_stream.getEndLine() +  " - String contem um  \\n: " + image);
     countLexError++;
+    System.err.println("Quantidade de erros encontrados ate o momento: " + countLexError);
   }
 |
 <INVALIND_CHAR:
- "\'" (~ ["\r", "\""]) >
+ "\'" (~ ["\n", "\'",]) ["\n"]>
   {
     System.err.println("Line " + input_stream.getEndLine() +  " - Char constant has a \\r: " + image);
     countLexError++;
+    System.err.println("Quantidade de erros encontrados ate o momento: " + countLexError);
   }
 }
 
@@ -238,7 +241,7 @@ TOKEN : /* constantes */
                   ) >
 |
  <  char_constant: // constante char
-   "\'"( ~["\'","\r"]) "\'" >
+   "\'"( ~["\'","\r"])? "\'" >
 |    
  <  string_constant: // constante string
    "\""( ~["\"","\n","\r"])* "\"" >
