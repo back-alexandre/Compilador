@@ -155,20 +155,20 @@ SPECIAL_TOKEN: /* tratar os erros l�xicos */
   }
 |
 <INVALID_CHAR:
- "\'" (~ ["\n", "\'"]) ["\n"]>
+  "\'" (~ ["\n", "\r","\'"])* ["\n","\r"]>
   {
     System.err.println("Line " + input_stream.getEndLine() +  " - Char constant has a \\r: " + image);
     countLexError++;
     System.err.println("Quantidade de erros encontrados ate o momento: " + countLexError);
   }
 |
-<INVALID_CHAR_SIZE:
- "\'" (~ ["\n"]) (~ ["\n"])+ "\'" >
+<EMPTY_CHAR:
+  "\'" "\'">
   {
-    System.err.println("Linha " + input_stream.getEndLine() +  " - Uma constante char deve ter tamanho 1 ");
+    System.err.println("Line " + input_stream.getEndLine() +  " - Char vazio: " + image);
     countLexError++;
     System.err.println("Quantidade de erros encontrados ate o momento: " + countLexError);
-  }  
+  }
 }
 
 TOKEN_MGR_DECLS :
@@ -245,7 +245,9 @@ TOKEN : /* constantes */
 )>
 |
 <  char_constant: // constante char
-   "\'"( ~["\'","\r"])? "\'" >
+   "\'" (~["\'","\r","\n"]) "\'"
+ | "\'" (("\\""n")) "\'"
+ | "\'" (("\\""r")) "\'" >
 |    
  <  string_constant: // constante string
    "\""( ~["\"","\n","\r"])* "\"" >
