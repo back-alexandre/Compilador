@@ -2,12 +2,6 @@
 10
 129
 410
-0765o
-0798O
-19AEh
-69FCH
-1001b
-0110B
 0.12
 1.1
 98.87
@@ -15,15 +9,19 @@
 'a'
 '_'
 'B'
+'\n'
+'\r'
 '4'
+'\n'
+'\r'
 "string 1"
 "1 CEBRUtius "
 "blu3t00th"
 /* asdf
  comment
  */
- //comm
- Identifer2
+//comm
+Identifer2
 break
 class
 constructor
